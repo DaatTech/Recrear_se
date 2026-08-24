@@ -1087,7 +1087,7 @@ function gerarContratoAniversario(d) {
 
 '<h2>Cláusula Segunda – Do Evento</h2>' +
 '<h3>Parágrafo Primeiro</h3>' +
-'<p>O evento será realizado no dia ' + d.data + ', às ' + d.horario + ', no endereço: ' + d.enderecoFesta + '. A CONTRATADA estará apta a atender até ' + d.qtdCriancas + ' (' + numeroPorExtenso(d.qtdCriancasNum) + ') crianças, pelo período de ' + d.duracao + ', conforme os serviços descritos neste contrato.</p>' +
+'<p>O evento será realizado no dia ' + d.data + ', às ' + d.horario + ', no endereço: ' + d.enderecoFesta + '.' + d.qtdCriancasTxt + '</p>' +
 '<h3>Parágrafo Segundo – Especificações</h3>' +
 '<p>Serão disponibilizados:</p>' +
 '<ul><li>' + d.recreadores + ' recreadores</li><li>Todas as atividades descritas na Cláusula Primeira</li></ul>' +
@@ -1165,7 +1165,7 @@ function gerarContratoCasamento(d) {
 
 '<h2>Cláusula Segunda – Do Evento</h2>' +
 '<h3>Parágrafo Primeiro</h3>' +
-'<p>O evento será realizado no dia ' + d.data + ', às ' + d.horario + ', no endereço: ' + d.enderecoFesta + '. A CONTRATADA estará apta a atender até ' + d.qtdCriancas + ' (' + numeroPorExtenso(d.qtdCriancasNum) + ') crianças, pelo período de ' + d.duracao + ', conforme os serviços descritos neste contrato.</p>' +
+'<p>O evento será realizado no dia ' + d.data + ', às ' + d.horario + ', no endereço: ' + d.enderecoFesta + '.' + d.qtdCriancasTxt + '</p>' +
 '<h3>Parágrafo Segundo – Especificações</h3>' +
 '<p>Serão disponibilizados:</p>' +
 '<ul><li>' + d.recreadores + ' recreadores</li><li>Todas as atividades descritas na Cláusula Primeira</li></ul>' +
@@ -1234,6 +1234,9 @@ function montarContrato() {
     horario: escapeHtml(document.getElementById('rInicio').value || '[horário não informado]'),
     qtdCriancas: qtdNum || '[qtd]',
     qtdCriancasNum: qtdNum,
+    qtdCriancasTxt: tipo === 'eventoAberto'
+      ? ' A CONTRATADA atenderá pelo período de ' + document.getElementById('rDuracao').value + ', conforme os serviços descritos neste contrato.'
+      : ' A CONTRATADA estará apta a atender até ' + (qtdNum || '[qtd]') + ' (' + numeroPorExtenso(qtdNum) + ') crianças, pelo período de ' + document.getElementById('rDuracao').value + ', conforme os serviços descritos neste contrato.',
     duracao: escapeHtml(document.getElementById('rDuracao').value),
     recreadores: escapeHtml(document.getElementById('rRecreadores').value),
     atividades: montarAtividadesLi() || '<li>[nenhuma atividade selecionada]</li>',
@@ -1404,6 +1407,9 @@ function mostrarModoCliente(payload) {
     horario: escapeHtml(payload.horario || '[horário não informado]'),
     qtdCriancas: payload.qtdCriancasNum || '[qtd]',
     qtdCriancasNum: payload.qtdCriancasNum || 0,
+    qtdCriancasTxt: payload.tipo === 'eventoAberto'
+      ? ' A CONTRATADA atenderá pelo período de ' + escapeHtml(payload.duracao || '') + ', conforme os serviços descritos neste contrato.'
+      : ' A CONTRATADA estará apta a atender até ' + (payload.qtdCriancasNum || '[qtd]') + ' (' + numeroPorExtenso(payload.qtdCriancasNum || 0) + ') crianças, pelo período de ' + escapeHtml(payload.duracao || '') + ', conforme os serviços descritos neste contrato.',
     duracao: escapeHtml(payload.duracao || ''),
     recreadores: escapeHtml(payload.recreadores || ''),
     atividades: (payload.atividades || []).map(function (n) { return '<li>' + escapeHtml(n) + '</li>'; }).join('') || '<li>[nenhuma atividade selecionada]</li>',
