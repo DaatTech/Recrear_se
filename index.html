@@ -115,6 +115,34 @@
     transition: background .15s, border-color .15s, box-shadow .15s;
   }
   .pkg-chip-qty.checked { background: #dff5f7; border-color: #3a5a5e; box-shadow: 0 3px 10px rgba(58, 90, 94, 0.14); }
+
+  /* ─── Balãozinho de informação (Espaço Kids) ─── */
+  .pkg-chip-wrap { position: relative; display: inline-flex; align-items: center; gap: 5px; }
+  .pkg-chip-wrap .info-icon {
+    width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid #7ea3a7; color: #3a5a5e;
+    font-size: 12px; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; font-family: 'Jost', sans-serif; user-select: none;
+    background: #fff; transition: background .15s, border-color .15s;
+  }
+  .pkg-chip-wrap .info-icon:hover, .pkg-chip-wrap .info-icon:focus { background: #dff5f7; border-color: #3a5a5e; outline: none; }
+  .pkg-chip-wrap .tooltip-bubble {
+    position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%) translateY(4px);
+    background: #241f1a; color: #fdf9f2; font-family: 'Jost', sans-serif; font-size: 12.5px; line-height: 1.55;
+    padding: 11px 14px; border-radius: 11px; width: 215px; text-align: left; z-index: 30;
+    box-shadow: 0 14px 30px rgba(0,0,0,0.24); opacity: 0; pointer-events: none;
+    transition: opacity .15s, transform .15s;
+  }
+  .pkg-chip-wrap .tooltip-bubble strong { color: #b7ecf2; }
+  .pkg-chip-wrap .tooltip-bubble::after {
+    content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+    border: 6px solid transparent; border-top-color: #241f1a;
+  }
+  .pkg-chip-wrap .info-icon:hover + .tooltip-bubble,
+  .pkg-chip-wrap .info-icon:focus + .tooltip-bubble,
+  .pkg-chip-wrap.show-tip .tooltip-bubble {
+    opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0);
+  }
+  @media (max-width: 480px) { .pkg-chip-wrap .tooltip-bubble { width: 180px; font-size: 12px; } }
   .pkg-chip-qty label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
   .pkg-chip-qty input[type=checkbox] { accent-color: #3a5a5e; margin: 0; }
   .pkg-chip-qty .qty-input {
@@ -460,11 +488,23 @@
       <label>Pacotes escolhidos <span style="font-weight:400;color:#8c8779;">(pode marcar mais de um)</span></label>
 
       <div class="pkg-group">
-        <div class="pkg-group-label">Espaço Kids — pacotes principais</div>
+        <div class="pkg-group-label">Espaço Kids — pacotes principais <span class="qty-label">(toque no ⓘ para ver o que inclui)</span></div>
         <div class="pkg-options" data-group="pacoteCasamento">
-          <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Bronze">Bronze</label>
-          <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Prata">Prata</label>
-          <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Ouro">Ouro</label>
+          <div class="pkg-chip-wrap">
+            <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Bronze">Bronze</label>
+            <span class="info-icon" tabindex="0">ⓘ</span>
+            <div class="tooltip-bubble"><strong>Bronze inclui:</strong><br>Pintura e escultura com balões.<br>Recreadores: 1.</div>
+          </div>
+          <div class="pkg-chip-wrap">
+            <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Prata">Prata</label>
+            <span class="info-icon" tabindex="0">ⓘ</span>
+            <div class="tooltip-bubble"><strong>Prata inclui:</strong><br>Pintura, escultura com balões e recreação.<br>Recreadores: 2.</div>
+          </div>
+          <div class="pkg-chip-wrap">
+            <label class="pkg-chip"><input type="checkbox" name="pacoteCasamento" value="Ouro">Ouro</label>
+            <span class="info-icon" tabindex="0">ⓘ</span>
+            <div class="tooltip-bubble"><strong>Ouro inclui:</strong><br>Pintura, escultura com balões, recreação e oficina de slime ou camarim.<br>Recreadores: 2.</div>
+          </div>
         </div>
       </div>
 
@@ -691,12 +731,12 @@ var PRECOS_ANIVERSARIO = {
   'Recreação 1 hora': { flat: 250, duracao: '1h', recreadores: 2 },
   'Recreação 2 horas': { flat: 500, duracao: '2h', recreadores: 2 },
   'Recreação 3 horas': { flat: 750, duracao: '3h', recreadores: 2 },
-  'Oficina de Miçangas': { perChildCustom: 15, min: 15 },
-  'Estação de Slime Premium': { perChildCustom: 20, min: 15 },
-  'Oficina de Ecobag': { perChildCustom: 30, min: 15 },
-  'Oficina de Cupcake': { perChildCustom: 40, min: 15 },
-  'Oficina de Massinha': { perChildCustom: 15, min: 15 },
-  'Oficina de Pintura no Gesso': { perChildCustom: 20, min: 15 },
+  'Oficina de Miçangas': { perChildCustom: 15 },
+  'Estação de Slime Premium': { perChildCustom: 20 },
+  'Oficina de Ecobag': { perChildCustom: 30 },
+  'Oficina de Cupcake': { perChildCustom: 40 },
+  'Oficina de Massinha': { perChildCustom: 15 },
+  'Oficina de Pintura no Gesso': { perChildCustom: 20 },
   'Essencial': { perChildCustom: 40, min: 10, duracao: '1h', recreadores: 2 },
   'Encanto': { perChildCustom: 50, min: 10, duracao: '1h30', recreadores: 2 },
   'Experiência': { perChildCustom: 70, min: 10, duracao: '2h', recreadores: 3 },
@@ -705,9 +745,12 @@ var PRECOS_ANIVERSARIO = {
 };
 
 var PRECOS_CASAMENTO = {
-  'Bronze': { flat: 1150, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 3 },
-  'Prata': { flat: 1350, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 3 },
-  'Ouro': { flat: 1650, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 4 },
+  'Bronze': { flat: 1150, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 1,
+    desc: 'Atividades: pintura e escultura com balões. Recreadores: 1.' },
+  'Prata': { flat: 1350, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 2,
+    desc: 'Atividades: pintura, escultura com balões e recreação. Recreadores: 2.' },
+  'Ouro': { flat: 1650, note: '4 horas, até 30 crianças', duracao: '4h', recreadores: 2,
+    desc: 'Atividades: pintura, escultura com balões, recreação e oficina de slime ou camarim. Recreadores: 2.' },
   'Oficina de Miçangas': { flat: 450, note: 'até 30 crianças' },
   'Oficina de Slime': { flat: 600, note: 'até 30 crianças' },
   'Oficina de Ecobag': { flat: 900, note: 'até 30 crianças' },
@@ -814,6 +857,21 @@ document.querySelectorAll('.pkg-chip input[type=checkbox]').forEach(function (ch
   chk.addEventListener('change', function () {
     chk.closest('.pkg-chip').classList.toggle('checked', chk.checked);
   });
+});
+
+// balãozinho de informação (toque no celular abre/fecha; hover cobre o desktop via CSS)
+document.querySelectorAll('.pkg-chip-wrap .info-icon').forEach(function (icon) {
+  icon.addEventListener('click', function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var wrap = icon.closest('.pkg-chip-wrap');
+    var estavaAberto = wrap.classList.contains('show-tip');
+    document.querySelectorAll('.pkg-chip-wrap.show-tip').forEach(function (w) { w.classList.remove('show-tip'); });
+    if (!estavaAberto) wrap.classList.add('show-tip');
+  });
+});
+document.addEventListener('click', function () {
+  document.querySelectorAll('.pkg-chip-wrap.show-tip').forEach(function (w) { w.classList.remove('show-tip'); });
 });
 
 // chips com campo de quantidade embutido (oficinas, spa party, camarim)
@@ -1074,7 +1132,19 @@ function escapeHtml(s) {
 }
 
 function montarAtividadesLi() {
-  return pacotesSelecionados.map(function (n) { return '<li>' + escapeHtml(n) + '</li>'; }).join('');
+  var tipo = document.getElementById('rTipoEvento').value;
+  var tabela = tabelaDoTipo(tipo);
+  return pacotesSelecionados.map(function (n) {
+    var def = tabela[n] || {};
+    var label = n;
+    if (def.perChildCustom) {
+      var wrap = document.querySelector('.pkg-chip-qty[data-item="' + n + '"]');
+      var qc = wrap ? (parseInt(wrap.querySelector('.qty-input').value, 10) || 0) : 0;
+      if (qc > 0) label += ' (' + qc + ' crianças)';
+    }
+    if (def.desc) label += ' — ' + def.desc;
+    return '<li>' + escapeHtml(label) + '</li>';
+  }).join('');
 }
 
 function gerarContratoAniversario(d) {
@@ -1307,6 +1377,20 @@ function b64DecodeUnicode(str) {
 function onlyDigits(s) { return (s || '').replace(/\D/g, ''); }
 
 document.getElementById('gerarLinkBtn').addEventListener('click', function () {
+  var tipoAtual = document.getElementById('rTipoEvento').value;
+  var tabelaAtual = tabelaDoTipo(tipoAtual);
+  var atividadesComQtd = pacotesSelecionados.map(function (n) {
+    var def = tabelaAtual[n] || {};
+    var label = n;
+    if (def.perChildCustom) {
+      var wrap = document.querySelector('.pkg-chip-qty[data-item="' + n + '"]');
+      var qc = wrap ? (parseInt(wrap.querySelector('.qty-input').value, 10) || 0) : 0;
+      if (qc > 0) label = n + ' (' + qc + ' crianças)';
+    }
+    if (def.desc) label += ' — ' + def.desc;
+    return label;
+  });
+
   var payload = {
     id: contratoIdAtual,
     tipo: document.getElementById('rTipoEvento').value,
@@ -1320,7 +1404,7 @@ document.getElementById('gerarLinkBtn').addEventListener('click', function () {
     qtdCriancasNum: parseInt(document.getElementById('rCriancas').value, 10) || 0,
     duracao: document.getElementById('rDuracao').value,
     recreadores: document.getElementById('rRecreadores').value,
-    atividades: pacotesSelecionados,
+    atividades: atividadesComQtd,
     valorTotal: totalGeral,
     taxa: window.taxaAtual || 0,
     desconto: window.descontoAtual || 0,
